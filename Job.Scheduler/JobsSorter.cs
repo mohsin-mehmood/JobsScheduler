@@ -12,6 +12,11 @@ namespace Job.Scheduler
         /// <returns></returns>
         public static string OrderJobs(string inputJobs)
         {
+            if (string.IsNullOrWhiteSpace(inputJobs))
+            {
+                return null;
+            }
+
             List<JobWithPreReqJobEdge> jobWithPreReqJobs = new List<JobWithPreReqJobEdge>();
 
             Stack<string> jobsWithNoPreReqJob = new Stack<string>();

@@ -4,8 +4,11 @@ namespace Job.Scheduler.Tests
 {
     public class JobsSorterTest
     {
+        /// <summary>
+        /// Test OrderJobs method with Empty input
+        /// </summary>
         [Fact]
-        public void EmptyJobs_Test()
+        public void OrderJobsWithEmptyInput_Test()
         {
             // Arrange 
             var inputJobs = "";
@@ -14,12 +17,28 @@ namespace Job.Scheduler.Tests
             var orderedJobs = JobsSorter.OrderJobs(inputJobs);
 
             // Assert
-            Assert.Empty(orderedJobs);
+            Assert.Null(orderedJobs);
+        }
+
+        /// <summary>
+        /// Test OrderJobs method with null input
+        /// </summary>
+        [Fact]
+        public void OrderJobsWithNullInput_Test()
+        {
+            // Arrange 
+            string inputJobs = null;
+
+            // Act
+            var orderedJobs = JobsSorter.OrderJobs(inputJobs);
+
+            // Assert
+            Assert.Null(orderedJobs);
         }
 
 
         [Fact]
-        public void Jobs_TestWithNoDependentJobs()
+        public void OrderJobsWithInputJobsWithoutDependencies_Test()
         {
             // Arrange 
             var inputJobs = @"a=>
@@ -33,9 +52,11 @@ c=>";
             Assert.Equal("cba", orderedJobs);
         }
 
-
+        /// <summary>
+        /// Test with list of jobs with dependencies
+        /// </summary>
         [Fact]
-        public void Jobs_TestWithDependentJobs()
+        public void OrderJobsWithInputJobsWithDependencies_Test()
         {
             // Arrange 
             var inputJobs = @"a =>
@@ -52,6 +73,9 @@ f =>";
             Assert.Equal("fcbead", orderedJobs);
         }
 
+        /// <summary>
+        /// Test Circular dependency
+        /// </summary>
         [Fact]
         public void Jobs_TestCircularDependency()
         {
