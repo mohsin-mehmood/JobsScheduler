@@ -3,15 +3,15 @@
     /// <summary>
     /// Represents the job and its pre-req jobs
     /// </summary>
-    internal class JobWithPreReqJobEdge
+    internal class JobWithDependencyRelation
     {
-        internal string PreReqJob { get; set; }
+        internal string JobDependentOn { get; set; }
         internal string JobToComplete { get; set; }
 
         
-        public JobWithPreReqJobEdge(string preReqJob, string jobToComplete)
+        public JobWithDependencyRelation(string preReqJob, string jobToComplete)
         {
-            this.PreReqJob = preReqJob;
+            this.JobDependentOn = preReqJob;
             this.JobToComplete = jobToComplete;
         }
     }

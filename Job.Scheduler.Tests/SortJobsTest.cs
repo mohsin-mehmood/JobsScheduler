@@ -2,19 +2,19 @@ using Xunit;
 
 namespace Job.Scheduler.Tests
 {
-    public class JobsSorterTest
+    public class SortJobsTest
     {
         /// <summary>
         /// Test OrderJobs method with Empty input
         /// </summary>
         [Fact]
-        public void OrderJobsWithEmptyInput_Test()
+        public void TopologicalSort_EmptyInput_Test()
         {
             // Arrange 
             var inputJobs = "";
 
             // Act
-            var orderedJobs = JobsSorter.OrderJobs(inputJobs);
+            var orderedJobs = SortJobs.TopologicalUsingKahnAlgorithm(inputJobs);
 
             // Assert
             Assert.Null(orderedJobs);
@@ -24,13 +24,13 @@ namespace Job.Scheduler.Tests
         /// Test OrderJobs method with null input
         /// </summary>
         [Fact]
-        public void OrderJobsWithNullInput_Test()
+        public void TopologicalSort_NullInput_Test()
         {
             // Arrange 
             string inputJobs = null;
 
             // Act
-            var orderedJobs = JobsSorter.OrderJobs(inputJobs);
+            var orderedJobs = SortJobs.TopologicalUsingKahnAlgorithm(inputJobs);
 
             // Assert
             Assert.Null(orderedJobs);
@@ -38,7 +38,7 @@ namespace Job.Scheduler.Tests
 
 
         [Fact]
-        public void OrderJobsWithInputJobsWithoutDependencies_Test()
+        public void TopologicalSort_JobsWithNoDependencies_Test()
         {
             // Arrange 
             var inputJobs = @"a=>
@@ -46,7 +46,7 @@ b=>c
 c=>";
 
             // Act
-            var orderedJobs = JobsSorter.OrderJobs(inputJobs);
+            var orderedJobs = SortJobs.TopologicalUsingKahnAlgorithm(inputJobs);
 
             // Assert
             Assert.Equal("cba", orderedJobs);
@@ -56,7 +56,7 @@ c=>";
         /// Test with list of jobs with dependencies
         /// </summary>
         [Fact]
-        public void OrderJobsWithInputJobsWithDependencies_Test()
+        public void TopologicalSort_JobsWithDependencies_Test()
         {
             // Arrange 
             var inputJobs = @"a =>
@@ -67,7 +67,7 @@ e => b
 f =>";
 
             // Act
-            var orderedJobs = JobsSorter.OrderJobs(inputJobs);
+            var orderedJobs = SortJobs.TopologicalUsingKahnAlgorithm(inputJobs);
 
             // Assert
             Assert.Equal("fcbead", orderedJobs);
@@ -77,7 +77,7 @@ f =>";
         /// Test Circular dependency
         /// </summary>
         [Fact]
-        public void Jobs_TestCircularDependency()
+        public void TopologicalSort_JobsCircularDependeny_Test()
         {
             // Arrange 
             var inputJobs = @"a =>
@@ -88,7 +88,7 @@ e =>
 f => b";
 
             // Act
-            var orderedJobs = JobsSorter.OrderJobs(inputJobs);
+            var orderedJobs = SortJobs.TopologicalUsingKahnAlgorithm(inputJobs);
 
             // Assert
             Assert.Equal("Jobs can’t have circular dependencies", orderedJobs);
